@@ -1,6 +1,20 @@
-#En caso de que no corra edite la ruta a donde este la base de datos en su computadora
-enoe <- read.csv("Datos ENOE/SDEMT425.csv")
+url_zip <- "https://github.com/EduardoVelazquezBarragan/Modelo-Logit-para-la-Formalidad-Laboral-en-la-ENOE/blob/main/Datos%20ENOE.zip?raw=true"
+
+# 1. Crear un archivo temporal
+temp <- tempfile()
+
+# 2. Descargar el archivo ZIP en el archivo temporal
+download.file(url_zip, temp, mode = "wb")
+
+# 3. Leer el CSV específico que está dentro del ZIP
+# El nombre "SDEMT425.csv" debe coincidir exactamente con cómo se llama dentro del ZIP
+enoe <- read.csv(unz(temp, "Datos ENOE/SDEMT425.csv"))
 enoe
+
+# 4. Eliminar el archivo temporal de la memoria
+unlink(temp)
+
+
 enoe<-enoe[enoe$clase2==1 & enoe$eda>=15,] #filtro a ocupados 
 
 formal<-ifelse(enoe$emp_ppal==2,1,0) # 1 formal, 0 informal
